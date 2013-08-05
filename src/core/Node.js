@@ -1,3 +1,5 @@
+var idCounter = 0;
+
 /**
  * A node in grid.
  * This class holds some basic information about a node and custom

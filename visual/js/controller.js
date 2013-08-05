@@ -136,7 +136,7 @@ $.extend(Controller, {
         timeStart = window.performance ? performance.now() : Date.now();
         grid = this.grid.clone();
         this.path = finder.findPath(
-            this.startX, this.startY, this.endX, this.endY, grid
+            grid.getNodeAt(this.startX,this.startY), grid.getNodeAt(this.endX, this.endY), grid.nodes
         );
         this.operationCount = this.operations.length;
         timeEnd = window.performance ? performance.now() : Date.now();
@@ -304,6 +304,7 @@ $.extend(Controller, {
                 Controller.operations.push({
                     x: this.x,
                     y: this.y,
+                    z: this.z,
                     attr: 'opened',
                     value: v
                 });
@@ -316,6 +317,7 @@ $.extend(Controller, {
                 Controller.operations.push({
                     x: this.x,
                     y: this.y,
+                    z: this.z,
                     attr: 'closed',
                     value: v
                 });
@@ -324,6 +326,7 @@ $.extend(Controller, {
                 Controller.operations.push({
                     x: this.x,
                     y: this.y,
+                    z: this.z,
                     attr: 'jumptest',
                     jumptested: true,
                     value: v
