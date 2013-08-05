@@ -25,7 +25,7 @@ var Panel = {
      * TODO: clean up this messy code.
      */
     getFinder: function() {
-        var finder, selected_header, heuristic, allowDiagonal, biDirectional, dontCrossCorners, weight, trackJumpRecursion;
+        var finder, selected_header, heuristic, biDirectional, weight, trackJumpRecursion;
 
         selected_header = $(
             '#algorithm_panel ' +
