@@ -10,7 +10,7 @@ var BiAStarFinder = require('./BiAStarFinder');
  */
 function BiDijkstraFinder(opt) {
     BiAStarFinder.call(this, opt);
-    this.heuristic = function(dx, dy) {
+    this.heuristic = function(dx, dy, dz) {
         return 0;
     };
 }

@@ -14,7 +14,7 @@ function BestFirstFinder(opt) {
     AStarFinder.call(this, opt);
 
     var orig = this.heuristic;
-    this.heuristic = function(dx, dy) {
+    this.heuristic = function(dx, dy, dz) {
         return orig(dx, dy) * 1000000;
     };
 };

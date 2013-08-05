@@ -11,13 +11,11 @@ var Heuristic  = require('../core/Heuristic');
  * @param {boolean} opt.dontCrossCorners Disallow diagonal movement touching block corners.
  * @param {function} opt.heuristic Heuristic function to estimate the distance
  *     (defaults to manhattan).
- * @param {integer} opt.weight Weight to apply to the heuristic to allow for suboptimal paths, 
+ * @param {integer} opt.weight Weight to apply to the heuristic to allow for suboptimal paths,
  *     in order to speed up the search.
  */
 function BiAStarFinder(opt) {
     opt = opt || {};
-    this.allowDiagonal = opt.allowDiagonal;
-    this.dontCrossCorners = opt.dontCrossCorners;
     this.heuristic = opt.heuristic || Heuristic.manhattan;
     this.weight = opt.weight || 1;
 }
@@ -27,20 +25,16 @@ function BiAStarFinder(opt) {
  * @return {Array.<[number, number]>} The path, including both start and
  *     end positions.
  */
-BiAStarFinder.prototype.findPath = function(startX, startY, endX, endY, grid) {
+BiAStarFinder.prototype.findPath = function(startNode, endNode, nodes) {
     var cmp = function(nodeA, nodeB) {
             return nodeA.f - nodeB.f;
         },
         startOpenList = new Heap(cmp),
         endOpenList = new Heap(cmp),
-        startNode = grid.getNodeAt(startX, startY),
-        endNode = grid.getNodeAt(endX, endY),
         heuristic = this.heuristic,
-        allowDiagonal = this.allowDiagonal,
-        dontCrossCorners = this.dontCrossCorners,
         weight = this.weight,
         abs = Math.abs, SQRT2 = Math.SQRT2,
-        node, neighbors, neighbor, i, l, x, y, ng,
+        node, neighbors, neighbor, i, l, x, y, z, ng,
         BY_START = 1, BY_END = 2;
 
     // set the `g` and `f` value of the start node to be 0
@@ -65,7 +59,7 @@ BiAStarFinder.prototype.findPath = function(startX, startY, endX, endY, grid) {
         node.closed = true;
 
         // get neigbours of the current node
-        neighbors = grid.getNeighbors(node, allowDiagonal, dontCrossCorners);
+        neighbors = node.neighbors;
         for (i = 0, l = neighbors.length; i < l; ++i) {
             neighbor = neighbors[i];
 
@@ -78,6 +72,7 @@ BiAStarFinder.prototype.findPath = function(startX, startY, endX, endY, grid) {
 
             x = neighbor.x;
             y = neighbor.y;
+            z = neighbor.z;
 
             // get the distance between current node and the neighbor
             // and calculate the next g score
@@ -87,7 +82,7 @@ BiAStarFinder.prototype.findPath = function(startX, startY, endX, endY, grid) {
             // can be reached with smaller cost from the current node
             if (!neighbor.opened || ng < neighbor.g) {
                 neighbor.g = ng;
-                neighbor.h = neighbor.h || weight * heuristic(abs(x - endX), abs(y - endY));
+                neighbor.h = neighbor.h || weight * heuristic(abs(x - endNode.x), abs(y - endNode.y), abs(z - endNode.z));
                 neighbor.f = neighbor.g + neighbor.h;
                 neighbor.parent = node;
 
@@ -109,7 +104,7 @@ BiAStarFinder.prototype.findPath = function(startX, startY, endX, endY, grid) {
         node.closed = true;
 
         // get neigbours of the current node
-        neighbors = grid.getNeighbors(node, allowDiagonal, dontCrossCorners);
+        neighbors = node.neighbors;
         for (i = 0, l = neighbors.length; i < l; ++i) {
             neighbor = neighbors[i];
 
@@ -131,7 +126,7 @@ BiAStarFinder.prototype.findPath = function(startX, startY, endX, endY, grid) {
             // can be reached with smaller cost from the current node
             if (!neighbor.opened || ng < neighbor.g) {
                 neighbor.g = ng;
-                neighbor.h = neighbor.h || weight * heuristic(abs(x - startX), abs(y - startY));
+                neighbor.h = neighbor.h || weight * heuristic(abs(x - startNode.x), abs(y - startNode.y), abs(z - startNode.z));
                 neighbor.f = neighbor.g + neighbor.h;
                 neighbor.parent = node;
 

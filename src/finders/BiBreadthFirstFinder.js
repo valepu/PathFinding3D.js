@@ -9,8 +9,6 @@ var Util = require('../core/Util');
  */
 function BiBreadthFirstFinder(opt) {
     opt = opt || {};
-    this.allowDiagonal = opt.allowDiagonal;
-    this.dontCrossCorners = opt.dontCrossCorners;
 }
 
 
@@ -19,13 +17,9 @@ function BiBreadthFirstFinder(opt) {
  * @return {Array.<[number, number]>} The path, including both start and
  *     end positions.
  */
-BiBreadthFirstFinder.prototype.findPath = function(startX, startY, endX, endY, grid) {
-    var startNode = grid.getNodeAt(startX, startY),
-        endNode = grid.getNodeAt(endX, endY),
-        startOpenList = [], endOpenList = [],
+BiBreadthFirstFinder.prototype.findPath = function(startNode, endNode, nodes) {
+    var startOpenList = [], endOpenList = [],
         neighbors, neighbor, node,
-        allowDiagonal = this.allowDiagonal,
-        dontCrossCorners = this.dontCrossCorners,
         BY_START = 0, BY_END = 1,
         i, l;
 
@@ -46,7 +40,7 @@ BiBreadthFirstFinder.prototype.findPath = function(startX, startY, endX, endY, g
         node = startOpenList.shift();
         node.closed = true;
 
-        neighbors = grid.getNeighbors(node, allowDiagonal, dontCrossCorners);
+        neighbors = node.neighbors;
         for (i = 0, l = neighbors.length; i < l; ++i) {
             neighbor = neighbors[i];
 
@@ -72,7 +66,7 @@ BiBreadthFirstFinder.prototype.findPath = function(startX, startY, endX, endY, g
         node = endOpenList.shift();
         node.closed = true;
 
-        neighbors = grid.getNeighbors(node, allowDiagonal, dontCrossCorners);
+        neighbors = node.neighbors;
         for (i = 0, l = neighbors.length; i < l; ++i) {
             neighbor = neighbors[i];
 

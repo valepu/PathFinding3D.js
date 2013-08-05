@@ -16,7 +16,6 @@ var Heuristic  = require('../core/Heuristic');
  */
 function AStarFinder(opt) {
     opt = opt || {};
-    this.dontCrossCorners = opt.dontCrossCorners;
     this.heuristic = opt.heuristic || Heuristic.manhattan;
     this.weight = opt.weight || 1;
 }
@@ -31,7 +30,6 @@ AStarFinder.prototype.findPath = function(startNode, endNode, nodes) {
             return nodeA.f - nodeB.f;
         }),
         heuristic = this.heuristic,
-        dontCrossCorners = this.dontCrossCorners,
         weight = this.weight,
         abs = Math.abs, SQRT2 = Math.SQRT2,
         node, neighbors, neighbor, i, l, x, y, z, ng;

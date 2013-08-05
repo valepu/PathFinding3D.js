@@ -19,12 +19,14 @@ function pathTest(opt) {
 
             return function(startX, startY, endX, endY, grid, expectedLength) {
                 it('should solve maze '+ ++testId, function() {
-                    path = finder.findPath(grid.getNodeAt(startX,startY), grid.getNodeAt(endX,endY), grid.nodes);
+                    var startNode = grid.getNodeAt(startX,startY);
+                    var endNode = grid.getNodeAt(endX,endY);
+                    path = finder.findPath(startNode, endNode, grid.nodes);
                     if (optimal) {
                         path.length.should.equal(expectedLength);
                     } else {
-                        path[0].should.eql([startNode.x, startNode.y]);
-                        path[path.length - 1].should.eql([endNode.x, endNode.y]);
+                        path[0].should.eql([startNode.x, startNode.y,startNode.z]);
+                        path[path.length - 1].should.eql([endNode.x, endNode.y, endNode.z]);
                     }
                 });
             };
@@ -94,9 +96,5 @@ pathTests({
 }, {
     name: 'BiBestFirst',
     finder: new PF.BiBestFirstFinder(),
-    optimal: false
-}, {
-    name: 'JumpPoint',
-    finder: new PF.JumpPointFinder(),
     optimal: false
 });

@@ -9,8 +9,6 @@ var Util = require('../core/Util');
  */
 function BreadthFirstFinder(opt) {
     opt = opt || {};
-    this.allowDiagonal = opt.allowDiagonal;
-    this.dontCrossCorners = opt.dontCrossCorners;
 }
 
 /**
@@ -18,12 +16,8 @@ function BreadthFirstFinder(opt) {
  * @return {Array.<[number, number]>} The path, including both start and
  *     end positions.
  */
-BreadthFirstFinder.prototype.findPath = function(startX, startY, endX, endY, grid) {
+BreadthFirstFinder.prototype.findPath = function(startNode, endNode, nodes) {
     var openList = [],
-        allowDiagonal = this.allowDiagonal,
-        dontCrossCorners = this.dontCrossCorners,
-        startNode = grid.getNodeAt(startX, startY),
-        endNode = grid.getNodeAt(endX, endY),
         neighbors, neighbor, node, i, l;
 
     // push the start pos into the queue
@@ -41,7 +35,7 @@ BreadthFirstFinder.prototype.findPath = function(startX, startY, endX, endY, gri
             return Util.backtrace(endNode);
         }
 
-        neighbors = grid.getNeighbors(node, allowDiagonal, dontCrossCorners);
+        neighbors = node.neighbors;
         for (i = 0, l = neighbors.length; i < l; ++i) {
             neighbor = neighbors[i];
 
@@ -55,7 +49,7 @@ BreadthFirstFinder.prototype.findPath = function(startX, startY, endX, endY, gri
             neighbor.parent = node;
         }
     }
-    
+
     // fail to find the path
     return [];
 };
