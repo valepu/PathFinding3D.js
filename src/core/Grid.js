@@ -24,6 +24,8 @@ function Grid(width, height, matrix) {
      * A 2D array of nodes.
      */
     this.nodes = this._buildNodes(width, height, matrix);
+
+    this.matrix = matrix;
 }
 
 /**
@@ -43,10 +45,9 @@ Grid.prototype._buildNodes = function(width, height, matrix) {
     for (i = 0; i < height; ++i) {
         nodes[i] = new Array(width);
         for (j = 0; j < width; ++j) {
-            nodes[i][j] = new Node(j, i);
+            nodes[i][j] = new Node(j, i, 0); // z == 0 in 2D
         }
     }
-
 
     if (matrix === undefined) {
         return nodes;
@@ -58,10 +59,13 @@ Grid.prototype._buildNodes = function(width, height, matrix) {
 
     for (i = 0; i < height; ++i) {
         for (j = 0; j < width; ++j) {
-            if (matrix[i][j]) {
-                // 0, false, null will be walkable
-                // while others will be un-walkable
-                nodes[i][j].walkable = false;
+            if (!matrix[i][j]) { // 0 => walkable
+                var n = nodes[i][j];
+                // Add neighbors if they are walkable
+                if(i!=0        && !matrix[i-1][j]) n.neighbors.push(nodes[i-1][j]);
+                if(i!=height-1 && !matrix[i+1][j]) n.neighbors.push(nodes[i+1][j]);
+                if(j!=0        && !matrix[i][j-1]) n.neighbors.push(nodes[i][j-1]);
+                if(j!=width-1  && !matrix[i][j+1]) n.neighbors.push(nodes[i][j+1]);
             }
         }
     }
@@ -83,7 +87,7 @@ Grid.prototype.getNodeAt = function(x, y) {
  * @return {boolean} - The walkability of the node.
  */
 Grid.prototype.isWalkableAt = function(x, y) {
-    return this.isInside(x, y) && this.nodes[y][x].walkable;
+    return this.isInside(x, y) && this.matrix[y][x]==0;
 };
 
 
@@ -109,7 +113,9 @@ Grid.prototype.isInside = function(x, y) {
  * @param {boolean} walkable - Whether the position is walkable.
  */
 Grid.prototype.setWalkableAt = function(x, y, walkable) {
-    this.nodes[y][x].walkable = walkable;
+    //this.nodes[y][x].walkable = walkable;
+    this.matrix[y][x] = walkable ? 0 : 1;
+    this.nodes = this._buildNodes(this.width,this.height,this.matrix);
 };
 
 
@@ -132,71 +138,8 @@ Grid.prototype.setWalkableAt = function(x, y, walkable) {
  * @param {boolean} allowDiagonal
  * @param {boolean} dontCrossCorners
  */
-Grid.prototype.getNeighbors = function(node, allowDiagonal, dontCrossCorners) {
-    var x = node.x,
-        y = node.y,
-        neighbors = [],
-        s0 = false, d0 = false,
-        s1 = false, d1 = false,
-        s2 = false, d2 = false,
-        s3 = false, d3 = false,
-        nodes = this.nodes;
-
-    // ↑
-    if (this.isWalkableAt(x, y - 1)) {
-        neighbors.push(nodes[y - 1][x]);
-        s0 = true;
-    }
-    // →
-    if (this.isWalkableAt(x + 1, y)) {
-        neighbors.push(nodes[y][x + 1]);
-        s1 = true;
-    }
-    // ↓
-    if (this.isWalkableAt(x, y + 1)) {
-        neighbors.push(nodes[y + 1][x]);
-        s2 = true;
-    }
-    // ←
-    if (this.isWalkableAt(x - 1, y)) {
-        neighbors.push(nodes[y][x - 1]);
-        s3 = true;
-    }
-
-    if (!allowDiagonal) {
-        return neighbors;
-    }
-
-    if (dontCrossCorners) {
-        d0 = s3 && s0;
-        d1 = s0 && s1;
-        d2 = s1 && s2;
-        d3 = s2 && s3;
-    } else {
-        d0 = s3 || s0;
-        d1 = s0 || s1;
-        d2 = s1 || s2;
-        d3 = s2 || s3;
-    }
-
-    // ↖
-    if (d0 && this.isWalkableAt(x - 1, y - 1)) {
-        neighbors.push(nodes[y - 1][x - 1]);
-    }
-    // ↗
-    if (d1 && this.isWalkableAt(x + 1, y - 1)) {
-        neighbors.push(nodes[y - 1][x + 1]);
-    }
-    // ↘
-    if (d2 && this.isWalkableAt(x + 1, y + 1)) {
-        neighbors.push(nodes[y + 1][x + 1]);
-    }
-    // ↙
-    if (d3 && this.isWalkableAt(x - 1, y + 1)) {
-        neighbors.push(nodes[y + 1][x - 1]);
-    }
-
-    return neighbors;
+Grid.prototype.getNeighbors = function(node) {
+    return node.neighbors;
 };
 
 
@@ -218,7 +161,8 @@ Grid.prototype.clone = function() {
     for (i = 0; i < height; ++i) {
         newNodes[i] = new Array(width);
         for (j = 0; j < width; ++j) {
-            newNodes[i][j] = new Node(j, i, thisNodes[i][j].walkable);
+            newNodes[i][j] = new Node(j, i, 0);
+            newNodes[i][j].neighbors = this.nodes[i][j].neighbors.slice(0);
         }
     }
 

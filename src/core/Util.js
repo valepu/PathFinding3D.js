@@ -5,10 +5,10 @@
  * @return {Array.<Array.<number>>} the path
  */
 function backtrace(node) {
-    var path = [[node.x, node.y]];
+    var path = [[node.x, node.y, node.z]];
     while (node.parent) {
         node = node.parent;
-        path.push([node.x, node.y]);
+        path.push([node.x, node.y, node.z]);
     }
     return path.reverse();
 }
@@ -33,13 +33,14 @@ exports.biBacktrace = biBacktrace;
  * @return {number} The length of the path
  */
 function pathLength(path) {
-    var i, sum = 0, a, b, dx, dy;
+    var i, sum = 0, a, b, dx, dy, dz;
     for (i = 1; i < path.length; ++i) {
         a = path[i - 1];
         b = path[i];
         dx = a[0] - b[0];
         dy = a[1] - b[1];
-        sum += Math.sqrt(dx * dx + dy * dy);
+        dz = a[2] - b[2];
+        sum += Math.sqrt(dx * dx + dy * dy + dz * dz);
     }
     return sum;
 }
@@ -75,7 +76,7 @@ function getLine(x0, y0, x1, y1) {
         if (x0 === x1 && y0 === y1) {
             break;
         }
-        
+
         e2 = 2 * err;
         if (e2 > -dy) {
             err = err - dy;

@@ -1,13 +1,13 @@
 /**
- * A node in grid. 
- * This class holds some basic information about a node and custom 
+ * A node in grid.
+ * This class holds some basic information about a node and custom
  * attributes may be added, depending on the algorithms' needs.
  * @constructor
- * @param {number} x - The x coordinate of the node on the grid.
- * @param {number} y - The y coordinate of the node on the grid.
- * @param {boolean} [walkable] - Whether this node is walkable.
+ * @param {number} x - The x coordinate of the node
+ * @param {number} y - The y coordinate of the node
+ * @param {number} z - The z coordinate of the node
  */
-function Node(x, y, walkable) {
+function Node(x, y, z) {
     /**
      * The x coordinate of the node on the grid.
      * @type number
@@ -19,10 +19,15 @@ function Node(x, y, walkable) {
      */
     this.y = y;
     /**
-     * Whether this node can be walked through.
-     * @type boolean
+     * The z coordinate of the node on the grid.
+     * @type number
      */
-    this.walkable = (walkable === undefined ? true : walkable);
+    this.z = z;
+    /**
+     * Neighboring nodes that are walkable from this node.
+     * @type array
+     */
+    this.neighbors = [];
 };
 
 module.exports = Node;

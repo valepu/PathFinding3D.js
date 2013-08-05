@@ -11,7 +11,7 @@ function pathTest(opt) {
         optimal = opt.optimal;
 
     describe(name, function() {
-        var startX, startY, endX, endY, grid, expectedLength,
+        var startNode, endNode, grid, expectedLength,
             width, height, matrix, path, i, scen;
 
         var test = (function() {
@@ -19,12 +19,12 @@ function pathTest(opt) {
 
             return function(startX, startY, endX, endY, grid, expectedLength) {
                 it('should solve maze '+ ++testId, function() {
-                    path = finder.findPath(startX, startY, endX, endY, grid);
+                    path = finder.findPath(grid.getNodeAt(startX,startY), grid.getNodeAt(endX,endY), grid.nodes);
                     if (optimal) {
                         path.length.should.equal(expectedLength);
                     } else {
-                        path[0].should.eql([startX, startY]);
-                        path[path.length - 1].should.eql([endX, endY]);
+                        path[0].should.eql([startNode.x, startNode.y]);
+                        path[path.length - 1].should.eql([endNode.x, endNode.y]);
                     }
                 });
             };
@@ -41,9 +41,11 @@ function pathTest(opt) {
             grid = new PF.Grid(width, height, matrix);
 
             test(
-                scen.startX, scen.startY, 
-                scen.endX, scen.endY, 
-                grid, 
+                scen.startX,
+                scen.startY,
+                scen.endX,
+                scen.endY,
+                grid,
                 scen.expectedLength
             );
         }

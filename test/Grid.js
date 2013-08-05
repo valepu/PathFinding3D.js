@@ -16,15 +16,7 @@ describe('Grid', function() {
 
             grid.nodes.length.should.equal(height);
             for (var i = 0; i < height; ++i) {
-                grid.nodes[i].length.should.equal(width); 
-            }
-        });
-
-        it('should set all nodes\' walkable attribute', function() {
-            for (var i = 0; i < height; ++i) {
-                for (var j = 0; j < width; ++j) {
-                    grid.isWalkableAt(j, i).should.be.true;
-                }
+                grid.nodes[i].length.should.equal(width);
             }
         });
     });
@@ -63,29 +55,19 @@ describe('Grid', function() {
 
             grid.nodes.length.should.equal(height);
             for (var i = 0; i < height; ++i) {
-                grid.nodes[i].length.should.equal(width); 
+                grid.nodes[i].length.should.equal(width);
             }
-        });
-
-        it('should initiate all nodes\' walkable attribute', function() {
-            enumPos(function(x, y, g) {
-                if (matrix[y][x]) {
-                    g.isWalkableAt(x, y).should.be.false;
-                } else {
-                    g.isWalkableAt(x, y).should.be.true;
-                }
-            });
         });
 
         it('should be able to set nodes\' walkable attribute', function() {
             enumPos(function(x, y) {
-                grid.setWalkableAt(x, y, false); 
+                grid.setWalkableAt(x, y, false);
             });
             enumPos(function(x, y) {
                 grid.isWalkableAt(x, y).should.be.false;
             })
             enumPos(function(x, y) {
-                grid.setWalkableAt(x, y, true); 
+                grid.setWalkableAt(x, y, true);
             });
             enumPos(function(x, y) {
                 grid.isWalkableAt(x, y).should.be.true;
@@ -105,7 +87,7 @@ describe('Grid', function() {
                 [width, 0, false],
                 [width, height, false],
             ];
-            
+
             asserts.forEach(function(v, i, a) {
                 grid.isInside(v[0], v[1]).should.equal(v[2]);
             });
@@ -116,8 +98,8 @@ describe('Grid', function() {
             var cmp = function(a, b) {
                 return a.x * 100 + a.y - b.x * 100 - b.y;
             };
-            grid.getNeighbors(grid.nodes[0][2], true).sort(cmp).should.eql([
-                grid.nodes[0][1], grid.nodes[1][2], grid.nodes[1][3]
+            grid.getNeighbors(grid.nodes[0][2]).sort(cmp).should.eql([
+                grid.nodes[0][1], grid.nodes[1][2]
             ].sort(cmp))
         });
     });
