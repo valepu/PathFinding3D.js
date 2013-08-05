@@ -39,25 +39,23 @@ Download the [minified js file](https://github.com/qiao/PathFinding.js/raw/maste
 Basic Usage
 -----------
 
-To build a grid-map of width 5 and height 3:
+The library comes with a 2D grid generator. It is convenient to use it rather than constructing all nodes manually.
+To build a 2D grid-map of width 5 and height 3:
 
 ```javascript
-var grid = new PF.Grid(5, 3); 
+var grid = new PF.Grid(5, 3);
+// grid.nodes now contains an array of PF.Node instances
 ```
 
-By default, all the nodes in the grid will be able to be walked through.
-To set whether a node at a given coordinate is walkable or not, use the `setWalkableAt` method.
+By default, all the nodes generated (```grid.nodes```) will be able to be walked through. To set whether a node at a given coordinate is walkable or not, use the `setWalkableAt` method.
 
-For example, to set the node at (0, 1) to be un-walkable, where 0 is the x coordinate (from left to right), and 
-1 is the y coordinate (from up to down):
+For example, to set the node at (0, 1) to be un-walkable, where 0 is the x coordinate (from left to right), and 1 is the y coordinate (from up to down):
 
 ```javascript
 grid.setWalkableAt(0, 1, false);
 ```
 
-You may also pass in a matrix while instantiating the `PF.Grid` class.
-It will initiate all the nodes in the grid with the same walkability indicated by the matrix.
-0 for walkable while 1 for blocked.
+You may also pass in a matrix while instantiating the `PF.Grid` class. It will initiate all the nodes in the grid with the same walkability indicated by the matrix. 0 for walkable while 1 for blocked.
 
 ```javascript
 var matrix = [
@@ -68,7 +66,7 @@ var matrix = [
 var grid = new PF.Grid(5, 3, matrix);
 ```
 
-Currently there are 9 path-finders bundled in this library, namely:
+Currently there are 8 path-finders bundled in this library, namely:
 
 *  `AStarFinder` *
 *  `BreadthFirstFinder` *
@@ -78,9 +76,8 @@ Currently there are 9 path-finders bundled in this library, namely:
 *  `BiBestFirstFinder`
 *  `BiDijkstraFinder` *
 *  `BiBreadthFirstFinder` *
-*  `JumpPointFinder` *
 
-The suffix `Bi` for the last four finders in the above list stands for the bi-directional searching strategy. 
+The suffix `Bi` for the last four finders in the above list stands for the bi-directional searching strategy.
 
 Also, Note that only the finders with trailing asterisks are guaranteed to find the shortest path.
 
@@ -93,7 +90,9 @@ var finder = new PF.AStarFinder();
 To find a path from (1, 2) to (4, 2), (Note: both the start point and end point should be walkable):
 
 ```javascript
-var path = finder.findPath(1, 2, 4, 2, grid);
+var startNode = grid.getNodeAt(1, 2);
+var endNode = grid.getNodeAt(4, 2);
+var path = finder.findPath(startNode, endNode, grid.nodes);
 ```
 
 `path` will be an array of coordinates including both the start and end positions.
@@ -101,7 +100,7 @@ var path = finder.findPath(1, 2, 4, 2, grid);
 For the `matrix` defined previously, the `path` will be:
 
 ```javascript
-[ [ 1, 2 ], [ 1, 1 ], [ 2, 1 ], [ 3, 1 ], [ 3, 2 ], [ 4, 2 ] ]
+[ [ 1, 2, 0 ], [ 1, 1, 0 ], [ 2, 1, 0 ], [ 3, 1, 0 ], [ 3, 2, 0 ], [ 4, 2, 0 ] ]
 ```
 
 Be aware that `grid` will be modified in each path-finding, and will not be usable afterwards. If you want to use a single grid multiple times, create a clone for it before calling `findPath`.
@@ -110,34 +109,23 @@ Be aware that `grid` will be modified in each path-finding, and will not be usab
 var gridBackup = grid.clone();
 ```
 
+If you do not want to use the ```Grid``` class, you can construct the nodes manually:
+
+```javascript
+var nodes = [
+    new PF.Node(0,0,0),
+    new PF.Node(1,0,0),
+    new PF.Node(2,0,0),
+];
+var finder = new PF.AStarFinder();
+var path = finder.findPath(nodes[0], nodes[2], nodes);
+```
+
 
 Advanced Usage
 --------------
 
 When instantiating path-finders, you may pass in additional parameters to indicate which specific strategies to use.
-
-For all path-finders, you may indicate whether diagonal movement is allowed. The default value is `false`, which means that the path can only go orthogonally.
-
-In order to enable diagonal movement:
-
-```javascript
-var finder = new PF.AStarFinder({
-    allowDiagonal: true
-});
-```
-
-When diagonal movement is enabled, you might want to prevent the path from touching the corners of the occupied grid blocks. This is usually desirable if the objects using the path have physical width and can also move between the grid cells.
-
-To enable the corner crossing prevention:
-
-```javascript
-var finder = new PF.AStarFinder({
-    allowDiagonal: true,
-    dontCrossCorners: true
-});
-```
-
-Note that `dontCrossCorners` only makes sense when `allowDiagonal` is also used. Currently all algorithms except `JumpPointFinder` support this feature.
 
 For `AStarFinder`, `BestFirstFinder` and all their `Bi` relatives, you may indicate which heuristic function to use.
 
@@ -155,7 +143,6 @@ To build a `BestFirstFinder` with diagonal movement allowed and a custom heurist
 
 ```javascript
 var finder = new PF.BestFirstFinder({
-    allowDiagonal: true,
     heuristic: function(dx, dy) {
         return Math.min(dx, dy);
     }
@@ -185,11 +172,11 @@ Layout:
     |-- utils        # build scripts
     `-- visual       # visualization
 
-You will need to install `node.js` and use `npm` to install the dependencies: 
+You will need to install `node.js` and use `npm` to install the dependencies:
 
-    npm install -d 
+    npm install -d
 
-To build the browser distribution 
+To build the browser distribution
 (It will use [node-browserify](https://github.com/substack/node-browserify) to generate a browser distribution,
 and use [UglifyJS](https://github.com/mishoo/UglifyJS) to compress):
 
@@ -197,7 +184,7 @@ and use [UglifyJS](https://github.com/mishoo/UglifyJS) to compress):
 
 To run the tests
 (algorithms only, not including the visualization) with
-[mocha](http://visionmedia.github.com/mocha/) and [should.js](https://github.com/visionmedia/should.js) 
+[mocha](http://visionmedia.github.com/mocha/) and [should.js](https://github.com/visionmedia/should.js)
 
     make test
 
