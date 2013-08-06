@@ -1,4 +1,4 @@
-PathFinding.js
+PathFinding3D.js
 ==============
 #### A comprehensive path-finding library in javascript. ####
 
@@ -7,7 +7,7 @@ Introduction
 
 The aim of this project is to provide a path-finding library that can be easily incorporated into web games. It may run on Node.js or the browser.
 
-It comes along with an [online demo](http://qiao.github.com/PathFinding.js/visual) to show how the algorithms execute. (The pathfinding speed is slowed down in the demo)
+It comes along with a [demo](visual) to show how the algorithms execute. (The pathfinding speed is slowed down in the demo)
 
 Server
 ------
@@ -15,7 +15,7 @@ Server
 If you want to use it in Node.js, you may install it via `npm`.
 
 ```bash
-npm install pathfinding
+npm install git://github.com/schteppe/PathFinding3D.js.git#master
 ```
 
 Then, in your program:
@@ -30,7 +30,7 @@ Now skip to the `Basic Usage` section of this readme.
 Browser
 -------
 
-Download the [minified js file](https://github.com/qiao/PathFinding.js/raw/master/lib/pathfinding-browser.min.js) and include it in your web page.
+Download the [minified js file](lib/pathfinding-browser.min.js) and include it in your web page.
 
 ```html
 <script type="text/javascript" src="./pathfinding-browser.min.js"></script>
@@ -47,7 +47,7 @@ var grid = new PF.Grid(5, 3);
 // grid.nodes now contains an array of PF.Node instances
 ```
 
-By default, all the nodes generated (```grid.nodes```) will be able to be walked through. To set whether a node at a given coordinate is walkable or not, use the `setWalkableAt` method.
+By default, all the nodes generated (```grid.nodes```) will be able to be walked through. To set whether a node at a given coordinate is walkable or not, use the `Grid.setWalkableAt` method.
 
 For example, to set the node at (0, 1) to be un-walkable, where 0 is the x coordinate (from left to right), and 1 is the y coordinate (from up to down):
 
