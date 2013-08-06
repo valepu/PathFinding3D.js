@@ -2,9 +2,8 @@
     "name"            : "pathfinding"
   , "version"         : "0.4.2"
   , "description"     : "Comprehensive pathfinding library for grid based games"
-  , "homepage"        : "https://github.com/qiao/PathFinding.js"
+  , "homepage"        : "https://github.com/schteppe/PathFinding3D.js"
   , "keywords"        : ["algorithm", "game"]
-  , "author"          : "Xueqiao Xu <xueqiaoxu@gmail.com>"
   , "main"            : "./index.js"
   , "dependencies"    : {}
   , "devDependencies" : {
@@ -16,7 +15,7 @@
   }
   , "repository"      : {
       "type"          : "git"
-    , "url"           : "git://github.com/qiao/PathFinding.js.git"
+    , "url"           : "git://github.com/schteppe/PathFinding3D.js.git"
   }
   , "licenses"        : [{
       "type"          :  "MIT"
