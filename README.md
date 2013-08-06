@@ -2,12 +2,14 @@ PathFinding3D.js
 ==============
 #### A comprehensive path-finding library in javascript. ####
 
+Forked from the 2D grid based [PathFinding.js](https://github.com/qiao/PathFinding.js) by [@qiao](https://github.com/qiao). Extended to general 3D graphs by [@schteppe](https://github.com/schteppe).
+
 Introduction
 ------------
 
 The aim of this project is to provide a path-finding library that can be easily incorporated into web games. It may run on Node.js or the browser.
 
-It comes along with a [demo](visual) to show how the algorithms execute. (The pathfinding speed is slowed down in the demo)
+It comes along with a [demo](visual) to show how the algorithms execute. (The pathfinding speed is slowed down in the demo).
 
 Server
 ------
@@ -193,7 +195,7 @@ License
 
 [MIT License](http://www.opensource.org/licenses/mit-license.php)
 
-&copy; 2011-2012 Xueqiao Xu &lt;xueqiaoxu@gmail.com&gt;
+&copy; 2013 PathFinding3D.js authors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
