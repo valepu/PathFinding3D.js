@@ -111,7 +111,7 @@ Be aware that `grid` will be modified in each path-finding, and will not be usab
 var gridBackup = grid.clone();
 ```
 
-If you do not want to use the ```Grid``` class, you can construct the nodes manually:
+If you do not want to use the ```Grid``` class, you can construct the nodes manually. Note that you will need to add all nodes and their neighbors.
 
 ```javascript
 var nodes = [
@@ -119,6 +119,9 @@ var nodes = [
     new PF.Node(1,0,0),
     new PF.Node(2,0,0),
 ];
+nodes[0].neighbors.push(nodes[1]);
+nodes[1].neighbors.push(nodes[0],nodes[2]);
+nodes[2].neighbors.push(nodes[1]);
 var finder = new PF.AStarFinder();
 var path = finder.findPath(nodes[0], nodes[2], nodes);
 ```
