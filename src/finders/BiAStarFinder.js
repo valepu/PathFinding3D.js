@@ -17,7 +17,7 @@ var Heuristic  = require('../core/Heuristic');
 function BiAStarFinder(opt) {
     opt = opt || {};
     this.heuristic = opt.heuristic || Heuristic.manhattan;
-    this.weight = opt.weight || 1;
+    this.weight = opt.weight || 1;
 }
 
 /**
