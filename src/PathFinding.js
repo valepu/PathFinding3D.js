@@ -12,4 +12,5 @@ module.exports = {
     'BiBestFirstFinder'    : require('./finders/BiBestFirstFinder'),
     'BiBreadthFirstFinder' : require('./finders/BiBreadthFirstFinder'),
     'BiDijkstraFinder'     : require('./finders/BiDijkstraFinder'),
+    'AStarFinderMinTurns'  : require('./finders/AStarFinderMinTurns'),
 };
