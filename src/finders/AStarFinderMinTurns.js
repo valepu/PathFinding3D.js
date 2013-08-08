@@ -76,7 +76,7 @@ AStarFinderMinTurns.prototype.findPath = function(startNode, endNode, nodes) {
                     by = node.y - node.parent.y,
                     bz = node.z - node.parent.z;
 
-                angle = Math.acos( (ax*bx + ay*by + az*bz) / ( Math.sqrt(ax*ax + ay*ay + az*az) ) + Math.sqrt(bx*bx + by*by + bz*bz) );
+                angle = Math.abs( Math.acos( (ax*bx + ay*by + az*bz) / ( Math.sqrt(ax*ax + ay*ay + az*az) ) + Math.sqrt(bx*bx + by*by + bz*bz) ) );
             }
 
             // get the distance between current node and the neighbor
