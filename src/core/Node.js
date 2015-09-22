@@ -36,10 +36,10 @@ function Node(x, y, z) {
      */
     this.neighbors = [];
     
-	/**
-	 * Returns the neighboring nodes that are walkable from this node.
+    /**
+     * Returns the neighboring nodes that are walkable from this node.
      * @type array
-	 */
+     */
     this.getWalkableNeighbors=function(){
     	var arr=[];
     	for(var i in this.neighbors){
