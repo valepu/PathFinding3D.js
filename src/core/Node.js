@@ -26,10 +26,29 @@ function Node(x, y, z) {
      */
     this.z = z;
     /**
-     * Neighboring nodes that are walkable from this node.
+     * Wheter the node is walkable or note. True by default
+     * @type Boolean
+     */
+    this.walkable = typeof walkable!=="undefined" ? walkable : true;
+    /**
+     * Neighboring nodes .
      * @type array
      */
     this.neighbors = [];
+    
+	/**
+	 * Returns the neighboring nodes that are walkable from this node.
+     * @type array
+	 */
+    this.getWalkableNeighbors=function(){
+    	var arr=[];
+    	for(var i in this.neighbors){
+    		if(this.neighbors[i].walkable==true){
+    			arr.push(this.neighbors[i]);
+    		}
+    	}
+    	return arr;
+    }
 };
 
 module.exports = Node;
