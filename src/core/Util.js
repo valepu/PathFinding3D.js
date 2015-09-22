@@ -2,13 +2,13 @@
  * Backtrace according to the parent records and return the path.
  * (including both start and end nodes)
  * @param {Node} node End node
- * @return {Array.<Array.<number>>} the path
+ * @return {Array.<{Node}>} the path
  */
 function backtrace(node) {
-    var path = [[node.x, node.y, node.z]];
+    var path = [node]
     while (node.parent) {
         node = node.parent;
-        path.push([node.x, node.y, node.z]);
+        path.push(node);
     }
     return path.reverse();
 }
@@ -29,7 +29,7 @@ exports.biBacktrace = biBacktrace;
 
 /**
  * Compute the length of the path.
- * @param {Array.<Array.<number>>} path The path
+ * @param {Array.<{Node}>} path The path
  * @return {number} The length of the path
  */
 function pathLength(path) {
@@ -37,9 +37,9 @@ function pathLength(path) {
     for (i = 1; i < path.length; ++i) {
         a = path[i - 1];
         b = path[i];
-        dx = a[0] - b[0];
-        dy = a[1] - b[1];
-        dz = a[2] - b[2];
+        dx = a[x] - b[x];
+        dy = a[y] - b[y];
+        dz = a[z] - b[z];
         sum += Math.sqrt(dx * dx + dy * dy + dz * dz);
     }
     return sum;
@@ -97,15 +97,15 @@ exports.getLine = getLine;
  * Smoothen the give path.
  * The original path will not be modified; a new path will be returned.
  * @param {PF.Grid} grid
- * @param {Array.<Array.<number>>} path The path
+ * @param {Array.<{Node}>} path The path
  * @return {Array.<Array.<number>>} Smoothened path
  */
 function smoothenPath(grid, path) {
     var len = path.length,
-        x0 = path[0][0],        // path start x
-        y0 = path[0][1],        // path start y
-        x1 = path[len - 1][0],  // path end x
-        y1 = path[len - 1][1],  // path end y
+        x0 = path[0][x],        // path start x
+        y0 = path[0][y],        // path start y
+        x1 = path[len - 1][x],  // path end x
+        y1 = path[len - 1][y],  // path end y
         sx, sy,                 // current start coordinate
         ex, ey,                 // current end coordinate
         lx, ly,                 // last valid end coordinate
@@ -114,14 +114,14 @@ function smoothenPath(grid, path) {
 
     sx = x0;
     sy = y0;
-    lx = path[1][0];
-    ly = path[1][1];
+    lx = path[1][x];
+    ly = path[1][y];
     newPath = [[sx, sy]];
 
     for (i = 2; i < len; ++i) {
         coord = path[i];
-        ex = coord[0];
-        ey = coord[1];
+        ex = coord[x];
+        ey = coord[y];
         line = getLine(sx, sy, ex, ey);
 
         blocked = false;
