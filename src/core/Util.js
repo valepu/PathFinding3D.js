@@ -37,9 +37,9 @@ function pathLength(path) {
     for (i = 1; i < path.length; ++i) {
         a = path[i - 1];
         b = path[i];
-        dx = a[x] - b[x];
-        dy = a[y] - b[y];
-        dz = a[z] - b[z];
+        dx = a.x - b.x;
+        dy = a.y - b.y;
+        dz = a.z - b.z;
         sum += Math.sqrt(dx * dx + dy * dy + dz * dz);
     }
     return sum;
@@ -102,10 +102,10 @@ exports.getLine = getLine;
  */
 function smoothenPath(grid, path) {
     var len = path.length,
-        x0 = path[0][x],        // path start x
-        y0 = path[0][y],        // path start y
-        x1 = path[len - 1][x],  // path end x
-        y1 = path[len - 1][y],  // path end y
+        x0 = path[0].x,        // path start x
+        y0 = path[0].y,        // path start y
+        x1 = path[len - 1].x,  // path end x
+        y1 = path[len - 1].y,  // path end y
         sx, sy,                 // current start coordinate
         ex, ey,                 // current end coordinate
         lx, ly,                 // last valid end coordinate
@@ -114,14 +114,14 @@ function smoothenPath(grid, path) {
 
     sx = x0;
     sy = y0;
-    lx = path[1][x];
-    ly = path[1][y];
+    lx = path[1].x;
+    ly = path[1].y;
     newPath = [[sx, sy]];
 
     for (i = 2; i < len; ++i) {
         coord = path[i];
-        ex = coord[x];
-        ey = coord[y];
+        ex = coord.x;
+        ey = coord.y;
         line = getLine(sx, sy, ex, ey);
 
         blocked = false;
