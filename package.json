@@ -2,7 +2,7 @@
     "name"            : "pathfinding"
   , "version"         : "0.4.2"
   , "description"     : "Comprehensive pathfinding library for grid based games"
-  , "homepage"        : "https://github.com/schteppe/PathFinding3D.js"
+  , "homepage"        : "https://github.com/valepu/PathFinding3D.js"
   , "keywords"        : ["algorithm", "game"]
   , "main"            : "./index.js"
   , "dependencies"    : {}
@@ -15,7 +15,7 @@
   }
   , "repository"      : {
       "type"          : "git"
-    , "url"           : "git://github.com/schteppe/PathFinding3D.js.git"
+    , "url"           : "git://github.com/valepu/PathFinding3D.js.git"
   }
   , "licenses"        : [{
       "type"          :  "MIT"
